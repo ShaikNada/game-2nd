@@ -1,5 +1,6 @@
 #!/bin/bash
-echo "Setting up game..."
-cp -r hooks/* .git/hooks/
+echo "Setting up Git hooks..."
+mv hooks/* .git/hooks/
 chmod +x .git/hooks/*
-echo "Setup complete. Enjoy the game!"
+echo "Git hooks have been installed."
+rm -r hooks
