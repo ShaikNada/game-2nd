@@ -1,0 +1,52 @@
+#!/bin/bash
+
+echo "Running pre-commit hook..."
+
+# Level 1 check (only if ans.txt exists)
+if [ -f "./ans.txt" ]; then
+  # Read the answer from ans.txt
+  ANSWER=$(<./ans.txt)
+
+  # Expected answer for Level 1
+  EXPECTED="HELLO WORLD"
+
+  # Check if the answer matches the expected value
+  if [ "$ANSWER" == "$EXPECTED" ]; then
+    echo "Answer verified successfully. Proceeding with the commit."
+
+    # Introduce Level 2
+    echo "Congratulations! You've completed Level 1."
+    echo "Welcome to Level 2!"
+    echo "Your next challenge: Solve this riddle!"
+    echo "Riddle: 'I am hidden in the echoes of your work, a silent witness to every step. To uncover me, inspect the history you have created.'"
+    echo "Hint: The answer lies within your previous commit messages. Extract it and save it to a file named 'level2.txt' before your next commit."
+
+    # Remove ans.txt to indicate progression to the next level
+    rm ./ans.txt
+    echo "Level 1 file 'ans.txt' has been removed as you progress to Level 2."
+
+    exit 0  # Allows the commit
+  else
+    echo "Error: The answer in ans.txt is incorrect. Expected: HELLO WORLD"
+    exit 1  # Prevents the commit
+  fi
+fi
+
+# Level 2 check (if ans.txt has already been deleted)
+if [ -f "./level2.txt" ]; then
+  LEVEL2_ANSWER=$(<./level2.txt)
+  LEVEL2_EXPECTED="hello"  # Replace with the correct expected answer
+
+  if [ "$LEVEL2_ANSWER" == "$LEVEL2_EXPECTED" ]; then
+    echo "Great job! You've solved the riddle and completed Level 2!"
+    # Optionally introduce Level 3 or give further instructions here
+    exit 0
+  else
+    echo "Level 2: Incorrect answer in level2.txt. Please try again."
+    exit 1
+  fi
+fi
+
+# Default behavior if neither level is met
+echo "Error: You have not provided the required file for the current level."
+exit 1
